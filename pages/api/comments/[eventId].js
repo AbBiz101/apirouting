@@ -1,5 +1,6 @@
 export default function userComment(req, res) {
-	eventID = req.query.eventId;
+	const  eventId  = req.query.eventId;
+
 	const { email, name, text } = req.body;
 	if (!email) {
 		console.log('no email address added');
@@ -9,14 +10,14 @@ export default function userComment(req, res) {
 		console.log('no text added');
 	}
 
-	if (req.method === 'POST' && email && name && text) {
+	if (req.method === 'POST') {
 		const newComment = {
 			id: new Date().toISOString(),
 			email,
 			name,
 			comment: text,
 		};
-		res.status(422).json({ message: 'message added', obj: newComment });
+		res.status(200).json({ message: 'message added', obj: newComment });
 	}
 
 	if (req.method === 'GET') {
