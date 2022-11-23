@@ -6,23 +6,25 @@ import classes from './comments.module.css';
 
 function Comments(props) {
 	const { eventId } = props;
-
 	const [showComments, setShowComments] = useState(false);
-
 	function toggleCommentsHandler() {
 		setShowComments((prevStatus) => !prevStatus);
 	}
 
 	function addCommentHandler(commentData) {
-		fetch('/api/comments/' + eventId, {
-			method: 'POST',
-			body: JSON.stringify(commentData),
-			headers: {
-				'content-Type': 'application/json',
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => console.log(data));
+		try {
+			fetch('/api/comments/' + props.eventId, {
+				method: 'POST',
+				body: JSON.stringify(commentData),
+				headers: {
+					'content-Type': 'application/json',
+				},
+			})
+				.then((res) => res.json())
+				.then((data) => console.log(data));
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	return (
