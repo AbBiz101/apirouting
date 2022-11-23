@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { dbConnection, insertDoc } from '../../../helpers/db-util';
 
 export default async function userComment(req, res) {
 	const eventId = req.query.eventId;
@@ -11,10 +11,7 @@ export default async function userComment(req, res) {
 	} else if (!text) {
 		console.log('no text added');
 	}
-	const client = await MongoClient.connect(
-		'mongodb+srv://abNextJS:JZkkU57MAyHpN3Jj@abcluster.vqjrw.mongodb.net/NextJSNewsLetter?retryWrites=true&w=majority',
-	);
-	const db = client.db();
+	const db = await dbConnection();
 	if (req.method === 'POST') {
 		const newComment = {
 			eventId,
@@ -22,7 +19,7 @@ export default async function userComment(req, res) {
 			name,
 			comment: text,
 		};
-		const result = await db.collection('comments').insertOne({ newComment });
+		const result = await insertDoc('comments', newComment);
 		newComment.id = result.insertedId;
 
 		console.log(result);
@@ -37,5 +34,5 @@ export default async function userComment(req, res) {
 		res.status(200).json({ message: 'req sent successfully', comments: docs });
 	}
 
-	client.close;
+	db.close;
 }
