@@ -1,4 +1,4 @@
-import { dbConnection, insertDoc } from '../../../helpers/db-util';
+import { dbConnection, insertDoc, getDocs } from '../../../helpers/db-util';
 
 export default async function userComment(req, res) {
 	const eventId = req.query.eventId;
@@ -26,11 +26,7 @@ export default async function userComment(req, res) {
 	}
 
 	if (req.method === 'GET') {
-		const docs = await db
-			.collection('comments')
-			.find()
-			.sort({ _id: -1 })
-			.toArray();
+		const docs = await getDocs('comments')
 		res.status(200).json({ message: 'req sent successfully', comments: docs });
 	}
 
