@@ -12,3 +12,10 @@ export async function insertDoc(collection, doc) {
 	const db = client.db();
 	return await db.collection(collection).insertOne(doc);
 }
+
+export async function getDocs(collection) {
+	const client = await dbConnection();
+	const db = client.db();
+	const docs = db.collection(collection).find().sort({ _id: -1 }).toArray();
+	return docs;
+}
